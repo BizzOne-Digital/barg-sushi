@@ -1,0 +1,42 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #0e0e0e 0%, #141410 100%);
+  padding: 40px 20px;
+}
+.auth-card {
+  background: var(--black-card);
+  border: 1px solid var(--black-border);
+  border-radius: var(--radius);
+  padding: 40px;
+  width: 100%; max-width: 420px;
+}
+.auth-logo { text-align: center; margin-bottom: 24px; }
+.auth-logo-text {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem; color: var(--gold);
+  letter-spacing: 4px; font-style: italic;
+}
+.auth-logo-sub {
+  display: block;
+  font-size: 0.7rem; color: var(--white-dim);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.auth-card h1 {
+  font-size: 1.6rem; text-align: center; color: var(--white); margin-bottom: 6px;
+}
+.auth-sub { text-align: center; color: var(--white-dim); font-size: 0.85rem; margin-bottom: 28px; }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-group label { font-size: 0.82rem; color: var(--white-dim); font-weight: 500; }
+
+.auth-btn { width: 100%; justify-content: center; font-size: 1rem; padding: 13px; margin-top: 8px; }
+.auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.auth-switch {
+  text-align: center; margin-top: 20px;
+  font-size: 0.85rem; color: var(--white-dim);
+}
+.auth-switch a { color: var(--gold); }
+.auth-switch a:hover { text-decoration: underline; }
