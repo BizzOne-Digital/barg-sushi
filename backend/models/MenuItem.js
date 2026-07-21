@@ -22,8 +22,14 @@ const menuItemSchema = new mongoose.Schema(
         "Poke Bowls",
         "Tataki & Tartar",
         "Platters & Combos",
+        "Grill",
         "Drinks",
       ],
+    },
+    menuType: {
+      type: String,
+      enum: ["Standard", "Special", "Platter", "Combo"],
+      default: "Standard",
     },
     price: { type: Number, required: true },
     description: { type: String, default: "" },
@@ -42,6 +48,7 @@ const menuItemSchema = new mongoose.Schema(
 );
 
 menuItemSchema.index({ category: 1, available: 1 });
+menuItemSchema.index({ menuType: 1, available: 1 });
 menuItemSchema.index({ featured: 1 });
 
 module.exports = mongoose.model("MenuItem", menuItemSchema);

@@ -33,6 +33,9 @@ const MenuItemCard = ({ item }) => {
           {isSpicy && <span className="badge badge-red"><Flame size={10} /> Spicy</span>}
           {isVeg && <span className="badge badge-veg"><Leaf size={10} /> Veg</span>}
           {item.featured && <span className="badge badge-gold"><Star size={10} /> Popular</span>}
+          {item.menuType && item.menuType !== "Standard" && (
+            <span className="badge badge-gold">{item.menuType}</span>
+          )}
         </div>
       </div>
 

@@ -33,8 +33,15 @@
 .search-box input::placeholder { color: var(--white-dim); }
 
 .menu-categories {
-  display: flex; flex-wrap: wrap; gap: 10px;
+  display: flex; flex-wrap: wrap;
+  column-gap: 10px; row-gap: 14px;
   padding-top: 16px; padding-bottom: 24px;
+}
+.menu-categories.menu-types {
+  margin-top: 8px;
+  padding-top: 16px;
+  padding-bottom: 32px;
+  border-top: 1px solid var(--black-border);
 }
 .cat-btn {
   padding: 8px 18px;

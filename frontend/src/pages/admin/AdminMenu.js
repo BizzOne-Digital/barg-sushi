@@ -8,11 +8,13 @@ import "./AdminMenu.css";
 const CATEGORIES = [
   "Appetizers","Salads","Nigiri","Sashimi","Hand Rolls","Our Classics",
   "Veggie Rolls","Rolls","Crispy Collection","Light & Fresh",
-  "Specialties","Poke Bowls","Tataki & Tartar","Platters & Combos","Drinks",
+  "Specialties","Poke Bowls","Tataki & Tartar","Platters & Combos","Grill","Drinks",
 ];
 
+const MENU_TYPES = ["Standard", "Special", "Platter", "Combo"];
+
 const EMPTY_FORM = {
-  name: "", nameFr: "", category: "Our Classics", price: "", pieces: "",
+  name: "", nameFr: "", category: "Our Classics", menuType: "Standard", price: "", pieces: "",
   description: "", descriptionFr: "", available: true, featured: false, tags: "",
 };
 
@@ -20,6 +22,7 @@ const AdminMenu = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeType, setActiveType] = useState("All");
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -46,6 +49,7 @@ const AdminMenu = () => {
     setEditItem(item);
     setForm({
       name: item.name, nameFr: item.nameFr || "", category: item.category,
+      menuType: item.menuType || "Standard",
       price: item.price, pieces: item.pieces || "",
       description: item.description, descriptionFr: item.descriptionFr || "",
       available: item.available, featured: item.featured,
@@ -122,8 +126,9 @@ const AdminMenu = () => {
 
   const filtered = items.filter((i) => {
     const matchCat = activeCategory === "All" || i.category === activeCategory;
+    const matchType = activeType === "All" || i.menuType === activeType;
     const matchSearch = i.name.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
+    return matchCat && matchType && matchSearch;
   });
 
   return (
@@ -157,6 +162,17 @@ const AdminMenu = () => {
               </button>
             ))}
           </div>
+          <div className="admin-cat-tabs admin-type-tabs">
+            {["All", ...MENU_TYPES].map((type) => (
+              <button
+                key={type}
+                className={`admin-cat-tab ${activeType === type ? "active" : ""}`}
+                onClick={() => setActiveType(type)}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
         </div>
 
         {loading ? <div className="spinner" /> : (
@@ -165,13 +181,13 @@ const AdminMenu = () => {
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>Image</th><th>Name</th><th>Category</th>
+                    <th>Image</th><th>Name</th><th>Category</th><th>Type</th>
                     <th>Price</th><th>Pcs</th><th>Status</th><th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.length === 0 ? (
-                    <tr><td colSpan={7} className="empty-row">No items found</td></tr>
+                    <tr><td colSpan={8} className="empty-row">No items found</td></tr>
                   ) : filtered.map((item) => (
                     <tr key={item._id}>
                       <td>
@@ -187,6 +203,7 @@ const AdminMenu = () => {
                         </div>
                       </td>
                       <td><span className="cat-pill">{item.category}</span></td>
+                      <td><span className="cat-pill">{item.menuType || "Standard"}</span></td>
                       <td style={{ color: "var(--gold)", fontWeight: 700 }}>${item.price.toFixed(2)}</td>
                       <td style={{ color: "var(--white-dim)" }}>{item.pieces || "—"}</td>
                       <td>
@@ -257,6 +274,12 @@ const AdminMenu = () => {
                   <label>Category *</label>
                   <select value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}>
                     {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Type *</label>
+                  <select value={form.menuType} onChange={(e) => setForm((f) => ({ ...f, menuType: e.target.value }))}>
+                    {MENU_TYPES.map((t) => <option key={t}>{t}</option>)}
                   </select>
                 </div>
                 <div className="form-group">

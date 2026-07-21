@@ -10,6 +10,10 @@ import "./CheckoutPage.css";
 const TAX = 0.15;
 const DELIVERY_FEE = 5;
 
+const pad = (n) => String(n).padStart(2, "0");
+const toLocalDatetimeInput = (date) =>
+  `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+
 const CheckoutPage = () => {
   const { items, subtotal, clearCart, orderType } = useCart();
   const { user } = useAuth();
@@ -23,8 +27,16 @@ const CheckoutPage = () => {
     tableNumber: "",
     notes: "",
     paymentMethod: "cash",
+    orderTiming: "asap",
+    scheduledFor: "",
   });
   const [submitting, setSubmitting] = useState(false);
+
+  const now = new Date();
+  const minSchedule = toLocalDatetimeInput(now);
+  const maxDate = new Date(now);
+  maxDate.setDate(maxDate.getDate() + 7);
+  const maxSchedule = toLocalDatetimeInput(maxDate);
 
   const deliveryFee = orderType === "delivery" ? DELIVERY_FEE : 0;
   const tax = parseFloat((subtotal * TAX).toFixed(2));
@@ -35,6 +47,9 @@ const CheckoutPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (items.length === 0) return toast.error("Cart is empty");
+    if (form.orderTiming === "scheduled" && !form.scheduledFor) {
+      return toast.error("Please pick a date and time for your order");
+    }
     setSubmitting(true);
     try {
       const payload = {
@@ -49,6 +64,7 @@ const CheckoutPage = () => {
         notes: form.notes,
         paymentMethod: form.paymentMethod,
         tableNumber: form.tableNumber,
+        scheduledFor: form.orderTiming === "scheduled" ? new Date(form.scheduledFor).toISOString() : undefined,
         deliveryAddress: orderType === "delivery" ? {
           street: form.street, city: form.city,
           province: form.province, postalCode: form.postalCode,
@@ -118,6 +134,36 @@ const CheckoutPage = () => {
                 </div>
               </div>
             )}
+
+            <div className="form-section">
+              <h2>When would you like this?</h2>
+              <div className="payment-options">
+                <label className={`payment-option ${form.orderTiming === "asap" ? "active" : ""}`}>
+                  <input type="radio" name="orderTiming" value="asap"
+                    checked={form.orderTiming === "asap"} onChange={handleChange} />
+                  <span>As soon as possible</span>
+                </label>
+                <label className={`payment-option ${form.orderTiming === "scheduled" ? "active" : ""}`}>
+                  <input type="radio" name="orderTiming" value="scheduled"
+                    checked={form.orderTiming === "scheduled"} onChange={handleChange} />
+                  <span>Schedule in advance (up to 7 days)</span>
+                </label>
+              </div>
+              {form.orderTiming === "scheduled" && (
+                <div className="form-group" style={{ marginTop: "12px" }}>
+                  <label>Pickup / Delivery Date &amp; Time *</label>
+                  <input
+                    type="datetime-local"
+                    name="scheduledFor"
+                    min={minSchedule}
+                    max={maxSchedule}
+                    value={form.scheduledFor}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              )}
+            </div>
 
             <div className="form-section">
               <h2>Payment Method</h2>

@@ -3,9 +3,10 @@ const MenuItem = require("../models/MenuItem");
 
 // @GET /api/menu — Public
 exports.getMenuItems = asyncHandler(async (req, res) => {
-  const { category, featured, available } = req.query;
+  const { category, menuType, featured, available } = req.query;
   const filter = {};
   if (category) filter.category = category;
+  if (menuType) filter.menuType = menuType;
   if (featured === "true") filter.featured = true;
   if (available !== "false") filter.available = true;
 
@@ -17,6 +18,12 @@ exports.getMenuItems = asyncHandler(async (req, res) => {
 exports.getCategories = asyncHandler(async (req, res) => {
   const cats = await MenuItem.distinct("category", { available: true });
   res.json({ success: true, data: cats });
+});
+
+// @GET /api/menu/types — Public
+exports.getMenuTypes = asyncHandler(async (req, res) => {
+  const types = await MenuItem.distinct("menuType", { available: true });
+  res.json({ success: true, data: types });
 });
 
 // @GET /api/menu/:id — Public

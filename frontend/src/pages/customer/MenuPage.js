@@ -5,10 +5,13 @@ import Reveal from "../../components/common/Reveal";
 import api from "../../utils/api";
 import "./MenuPage.css";
 
+const MENU_TYPES = ["All", "Standard", "Special", "Platter", "Combo"];
+
 const MenuPage = () => {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [activeType, setActiveType] = useState("All");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -24,9 +27,10 @@ const MenuPage = () => {
 
   const filtered = items.filter((item) => {
     const matchCat = activeCategory === "All" || item.category === activeCategory;
+    const matchType = activeType === "All" || item.menuType === activeType;
     const matchSearch = item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.description.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
+    return matchCat && matchType && matchSearch;
   });
 
   // Group by category for display
@@ -66,6 +70,18 @@ const MenuPage = () => {
             onClick={() => setActiveCategory(cat)}
           >
             {cat}
+          </button>
+        ))}
+      </div>
+
+      <div className="menu-categories menu-types container">
+        {MENU_TYPES.map((type) => (
+          <button
+            key={type}
+            className={`cat-btn ${activeType === type ? "active" : ""}`}
+            onClick={() => setActiveType(type)}
+          >
+            {type}
           </button>
         ))}
       </div>

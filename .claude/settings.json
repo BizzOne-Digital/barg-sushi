@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.umaisooshe.com)",
+      "WebFetch(domain:umaisooshe.order-online.ai)",
+      "Bash(node -e \"require\\('./models/MenuItem.js'\\); require\\('./models/Order.js'\\); require\\('./data/menuSeed.js'\\); console.log\\('backend OK'\\)\")",
+      "Bash(node -e \"require\\('./models/MenuItem.js'\\); const {menuItems}=require\\('./data/menuSeed.js'\\); console.log\\(menuItems.filter\\(i=>i.category==='Grill'\\)\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(node data/seedMenuOnly.js)"
+    ]
+  }
+}

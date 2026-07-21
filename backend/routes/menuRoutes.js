@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const { protect, adminOnly } = require("../middleware/authMiddleware");
 const {
-  getMenuItems, getCategories, getMenuItem,
+  getMenuItems, getCategories, getMenuTypes, getMenuItem,
   createMenuItem, updateMenuItem, deleteMenuItem, toggleAvailability,
 } = require("../controllers/menuController");
 
 router.get("/", getMenuItems);
 router.get("/categories", getCategories);
+router.get("/types", getMenuTypes);
 router.get("/:id", getMenuItem);
 router.post("/", protect, adminOnly, createMenuItem);
 router.put("/:id", protect, adminOnly, updateMenuItem);

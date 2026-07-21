@@ -34,6 +34,21 @@ const orderSchema = new mongoose.Schema(
 
     tableNumber: { type: String },
 
+    // Advance ordering — customer can schedule pickup/delivery up to 7 days ahead
+    scheduledFor: {
+      type: Date,
+      validate: {
+        validator: function (value) {
+          if (!value) return true;
+          const now = new Date();
+          const maxDate = new Date();
+          maxDate.setDate(maxDate.getDate() + 7);
+          return value >= now && value <= maxDate;
+        },
+        message: "Scheduled date must be between now and 7 days from today",
+      },
+    },
+
     status: {
       type: String,
       enum: ["pending", "confirmed", "preparing", "ready", "out-for-delivery", "delivered", "cancelled"],

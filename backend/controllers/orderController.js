@@ -5,6 +5,16 @@ const { sendOrderConfirmation } = require("../utils/emailService");
 
 // @POST /api/orders — Public (guest or logged in)
 exports.createOrder = asyncHandler(async (req, res) => {
+  if (req.body.scheduledFor) {
+    const scheduled = new Date(req.body.scheduledFor);
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 7);
+    if (Number.isNaN(scheduled.getTime()) || scheduled < new Date() || scheduled > maxDate) {
+      res.status(400);
+      throw new Error("Scheduled date must be between now and 7 days from today");
+    }
+  }
+
   const settings = await Settings.findOne();
   const taxRate = settings?.taxRate || 0.15;
   const deliveryFee = req.body.orderType === "delivery" ? (settings?.deliveryFee || 5) : 0;

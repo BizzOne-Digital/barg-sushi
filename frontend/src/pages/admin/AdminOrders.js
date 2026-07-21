@@ -65,6 +65,12 @@ const AdminOrders = () => {
                       <td style={{ color: "var(--white-dim)", fontSize: "0.78rem" }}>
                         {new Date(order.createdAt).toLocaleDateString("en-CA")}<br />
                         {new Date(order.createdAt).toLocaleTimeString("en-CA", { hour: "2-digit", minute: "2-digit" })}
+                        {order.scheduledFor && (
+                          <div style={{ color: "var(--gold)", marginTop: 4 }}>
+                            Scheduled: {new Date(order.scheduledFor).toLocaleDateString("en-CA")}{" "}
+                            {new Date(order.scheduledFor).toLocaleTimeString("en-CA", { hour: "2-digit", minute: "2-digit" })}
+                          </div>
+                        )}
                       </td>
                       <td>
                         <span className="status-dot" style={{ background: STATUS_COLORS[order.status] }} />

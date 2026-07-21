@@ -42,6 +42,7 @@ exports.sendOrderConfirmation = async ({ email, name, order }) => {
           <p>Hello <strong>${name}</strong>, your order has been received.</p>
           <p><strong>Order #:</strong> ${order.orderNumber}</p>
           <p><strong>Type:</strong> ${order.orderType.charAt(0).toUpperCase() + order.orderType.slice(1)}</p>
+          ${order.scheduledFor ? `<p><strong>Scheduled For:</strong> ${new Date(order.scheduledFor).toLocaleString("en-CA")}</p>` : ""}
           <table style="width:100%;border-collapse:collapse;margin:20px 0;">
             <thead><tr style="background:#f5f5f5;"><th style="padding:8px;text-align:left;">Item</th><th>Qty</th><th>Price</th></tr></thead>
             <tbody>${itemsHtml}</tbody>
