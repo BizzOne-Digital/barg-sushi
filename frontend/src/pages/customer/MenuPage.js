@@ -3,6 +3,8 @@ import { Search } from "lucide-react";
 import MenuItemCard from "../../components/customer/MenuItemCard";
 import Reveal from "../../components/common/Reveal";
 import api from "../../utils/api";
+import { useLanguage } from "../../context/LanguageContext";
+import { t, translateCategory } from "../../utils/translations";
 import "./MenuPage.css";
 
 const MENU_TYPES = ["All", "Standard", "Special", "Platter", "Combo"];
@@ -14,6 +16,7 @@ const MenuPage = () => {
   const [activeType, setActiveType] = useState("All");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+  const { language } = useLanguage();
 
   useEffect(() => {
     Promise.all([
@@ -28,8 +31,10 @@ const MenuPage = () => {
   const filtered = items.filter((item) => {
     const matchCat = activeCategory === "All" || item.category === activeCategory;
     const matchType = activeType === "All" || item.menuType === activeType;
-    const matchSearch = item.name.toLowerCase().includes(search.toLowerCase()) ||
-      item.description.toLowerCase().includes(search.toLowerCase());
+    const name = language === "fr" && item.nameFr ? item.nameFr : item.name;
+    const description = language === "fr" && item.descriptionFr ? item.descriptionFr : item.description;
+    const matchSearch = name.toLowerCase().includes(search.toLowerCase()) ||
+      description.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchType && matchSearch;
   });
 
@@ -44,8 +49,8 @@ const MenuPage = () => {
     <div className="menu-page">
       <div className="menu-hero">
         <div className="container">
-          <p className="section-eyebrow">Fresh Daily</p>
-          <h1 className="menu-hero-title">Our Menu</h1>
+          <p className="section-eyebrow">{language === "fr" ? "Frais Chaque Jour" : "Fresh Daily"}</p>
+          <h1 className="menu-hero-title">{t(language, "menu_title")}</h1>
           <div className="divider" style={{ margin: "12px auto 0" }} />
         </div>
       </div>
@@ -55,7 +60,7 @@ const MenuPage = () => {
           <Search size={18} />
           <input
             type="text"
-            placeholder="Search items..."
+            placeholder={t(language, "menu_search")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -69,7 +74,7 @@ const MenuPage = () => {
             className={`cat-btn ${activeCategory === cat ? "active" : ""}`}
             onClick={() => setActiveCategory(cat)}
           >
-            {cat}
+            {cat === "All" ? t(language, "menu_all") : translateCategory(language, cat)}
           </button>
         ))}
       </div>
@@ -81,7 +86,7 @@ const MenuPage = () => {
             className={`cat-btn ${activeType === type ? "active" : ""}`}
             onClick={() => setActiveType(type)}
           >
-            {type}
+            {type === "All" ? t(language, "menu_all") : type}
           </button>
         ))}
       </div>
@@ -90,13 +95,15 @@ const MenuPage = () => {
         {loading ? (
           <div className="spinner" />
         ) : Object.keys(grouped).length === 0 ? (
-          <p style={{ color: "var(--white-dim)", textAlign: "center", padding: "60px 0" }}>No items found.</p>
+          <p style={{ color: "var(--white-dim)", textAlign: "center", padding: "60px 0" }}>
+            {language === "fr" ? "Aucun article trouvé." : "No items found."}
+          </p>
         ) : (
           Object.entries(grouped).map(([cat, catItems]) => (
             <div key={cat} className="menu-category-group">
               <Reveal as="div" className="cat-heading">
-                <h2>{cat}</h2>
-                <span className="cat-count">{catItems.length} items</span>
+                <h2>{translateCategory(language, cat)}</h2>
+                <span className="cat-count">{catItems.length} {t(language, "menu_items")}</span>
               </Reveal>
               <div className="menu-grid">
                 {catItems.map((item, i) => (

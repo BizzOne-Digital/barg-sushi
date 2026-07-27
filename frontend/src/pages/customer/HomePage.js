@@ -5,20 +5,24 @@ import HeroSection from "../../components/customer/HeroSection";
 import MenuItemCard from "../../components/customer/MenuItemCard";
 import Reveal from "../../components/common/Reveal";
 import api from "../../utils/api";
+import { useLanguage } from "../../context/LanguageContext";
+import { t } from "../../utils/translations";
 import "./HomePage.css";
 
 const FEATURED_CATEGORIES = ["Specialties", "Crispy Collection", "Poke Bowls"];
 
-const stats = [
-  { icon: <Star />, label: "Premium Quality", value: "100+" },
-  { icon: <Users />, label: "Happy Customers", value: "Daily" },
-  { icon: <Award />, label: "Menu Items", value: "97+" },
-  { icon: <MapPin />, label: "Locations", value: "1" },
+const useStats = (language) => [
+  { icon: <Star />, label: language === "fr" ? "Qualité Premium" : "Premium Quality", value: "100+" },
+  { icon: <Users />, label: language === "fr" ? "Clients Satisfaits" : "Happy Customers", value: language === "fr" ? "Quotidien" : "Daily" },
+  { icon: <Award />, label: language === "fr" ? "Articles au Menu" : "Menu Items", value: "97+" },
+  { icon: <MapPin />, label: language === "fr" ? "Emplacements" : "Locations", value: "1" },
 ];
 
 const HomePage = () => {
   const [featured, setFeatured] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { language } = useLanguage();
+  const stats = useStats(language);
 
   useEffect(() => {
     api.get("/menu?featured=true").then(({ data }) => {
@@ -48,8 +52,8 @@ const HomePage = () => {
       {/* Featured Items */}
       <section className="section featured-section">
         <div className="container">
-          <Reveal as="p" className="section-eyebrow">Crowd Favourites</Reveal>
-          <Reveal as="h2" className="section-title" delay={80}>Featured Dishes</Reveal>
+          <Reveal as="p" className="section-eyebrow">{t(language, "home_favourites")}</Reveal>
+          <Reveal as="h2" className="section-title" delay={80}>{t(language, "home_featured_dishes")}</Reveal>
           <Reveal className="divider" delay={140} />
           {loading ? (
             <div className="spinner" />
@@ -64,7 +68,7 @@ const HomePage = () => {
           )}
           <div style={{ textAlign: "center", marginTop: 40 }}>
             <Link to="/menu" className="btn btn-outline">
-              View Full Menu <ChevronRight size={16} />
+              {t(language, "home_view_menu")} <ChevronRight size={16} />
             </Link>
           </div>
         </div>
@@ -88,13 +92,13 @@ const HomePage = () => {
             </div>
           </Reveal>
           <Reveal variant="right" className="about-teaser-text" delay={120}>
-            <p className="section-eyebrow">Our Story</p>
-            <h2 className="section-title">More Than Just Sushi</h2>
+            <p className="section-eyebrow">{t(language, "home_our_story")}</p>
+            <h2 className="section-title">{t(language, "home_more_than_sushi")}</h2>
             <div className="divider" />
-            <p>At Barg Sushi Bar & Grill, we combine the artistry of Japanese cuisine with the warmth of a neighbourhood restaurant. Every roll is crafted fresh, every dish prepared with care.</p>
-            <p style={{ marginTop: 14 }}>Whether you're dining in, ordering for pickup, or planning a party — we've got you covered.</p>
+            <p>{t(language, "home_story_p1")}</p>
+            <p style={{ marginTop: 14 }}>{t(language, "home_story_p2")}</p>
             <Link to="/about" className="btn btn-gold" style={{ marginTop: 28 }}>
-              Learn More <ChevronRight size={16} />
+              {t(language, "home_learn_more")} <ChevronRight size={16} />
             </Link>
           </Reveal>
         </div>
@@ -103,15 +107,15 @@ const HomePage = () => {
       {/* Services */}
       <section className="services-section section">
         <div className="container">
-          <Reveal as="p" className="section-eyebrow">How We Serve You</Reveal>
-          <Reveal as="h2" className="section-title" delay={80}>Order Your Way</Reveal>
+          <Reveal as="p" className="section-eyebrow">{t(language, "home_how_serve")}</Reveal>
+          <Reveal as="h2" className="section-title" delay={80}>{t(language, "home_order_your_way")}</Reveal>
           <Reveal className="divider" delay={140} />
           <div className="services-grid">
             {[
-              { icon: UtensilsCrossed, title: "Dine-In", desc: "Enjoy a premium experience at our restaurant. Book a table for any occasion." },
-              { icon: ShoppingBag, title: "Takeout", desc: "Order ahead and pick up your favourites — ready when you are." },
-              { icon: Bike, title: "Delivery", desc: "Fresh sushi delivered to your door. Fast, reliable, and hot." },
-              { icon: PartyPopper, title: "Party Orders", desc: "Feeding a crowd? We accept large orders. Contact us to plan your event." },
+              { icon: UtensilsCrossed, title: t(language, "home_dine_in"), desc: t(language, "home_dine_in_desc") },
+              { icon: ShoppingBag, title: t(language, "home_takeout"), desc: t(language, "home_takeout_desc") },
+              { icon: Bike, title: t(language, "home_delivery"), desc: t(language, "home_delivery_desc") },
+              { icon: PartyPopper, title: t(language, "home_party_orders"), desc: t(language, "home_party_orders_desc") },
             ].map((s, i) => (
               <Reveal as="div" className="service-card" key={s.title} delay={i * 100} variant="scale">
                 <div className="service-emoji"><s.icon size={28} /></div>
@@ -127,12 +131,12 @@ const HomePage = () => {
       <section className="cta-banner">
         <Reveal className="container cta-inner">
           <div>
-            <h2>Ready to Order?</h2>
-            <p>Browse our full menu and place your order online.</p>
+            <h2>{t(language, "home_ready_order")}</h2>
+            <p>{t(language, "home_ready_order_desc")}</p>
           </div>
           <div className="cta-btns">
-            <Link to="/menu" className="btn btn-gold">Order Now</Link>
-            <Link to="/reservations" className="btn btn-outline">Book a Table</Link>
+            <Link to="/menu" className="btn btn-gold">{t(language, "hero_order_now")}</Link>
+            <Link to="/reservations" className="btn btn-outline">{t(language, "hero_book_table")}</Link>
           </div>
         </Reveal>
       </section>
