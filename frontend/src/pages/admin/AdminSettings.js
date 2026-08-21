@@ -8,6 +8,8 @@ const AdminSettings = () => {
   const [settings, setSettings] = useState(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [pwForm, setPwForm] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
+  const [pwSaving, setPwSaving] = useState(false);
 
   useEffect(() => {
     api.get("/settings").then(({ data }) => setSettings(data.data)).finally(() => setLoading(false));
@@ -32,6 +34,36 @@ const AdminSettings = () => {
       toast.error("Failed to save");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handlePwChange = (e) => {
+    const { name, value } = e.target;
+    setPwForm((f) => ({ ...f, [name]: value }));
+  };
+
+  const handlePwSubmit = async (e) => {
+    e.preventDefault();
+    if (pwForm.newPassword !== pwForm.confirmPassword) {
+      toast.error("New passwords do not match");
+      return;
+    }
+    if (pwForm.newPassword.length < 6) {
+      toast.error("New password must be at least 6 characters");
+      return;
+    }
+    setPwSaving(true);
+    try {
+      await api.put("/auth/change-password", {
+        currentPassword: pwForm.currentPassword,
+        newPassword: pwForm.newPassword,
+      });
+      toast.success("Password updated");
+      setPwForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update password");
+    } finally {
+      setPwSaving(false);
     }
   };
 
@@ -181,6 +213,32 @@ const AdminSettings = () => {
         <div className="settings-save-bar">
           <button type="submit" className="btn btn-gold" disabled={saving}>
             {saving ? "Saving..." : "Save All Settings"}
+          </button>
+        </div>
+      </form>
+
+      {/* Change Password — separate form/submit from site settings above */}
+      <form onSubmit={handlePwSubmit}>
+        <div className="settings-section">
+          <h2>Change Password</h2>
+          <div className="settings-grid">
+            <div className="form-group">
+              <label>Current Password</label>
+              <input type="password" name="currentPassword" value={pwForm.currentPassword} onChange={handlePwChange} required />
+            </div>
+            <div className="form-group">
+              <label>New Password</label>
+              <input type="password" name="newPassword" value={pwForm.newPassword} onChange={handlePwChange} required minLength={6} />
+            </div>
+            <div className="form-group">
+              <label>Confirm New Password</label>
+              <input type="password" name="confirmPassword" value={pwForm.confirmPassword} onChange={handlePwChange} required minLength={6} />
+            </div>
+          </div>
+        </div>
+        <div className="settings-save-bar">
+          <button type="submit" className="btn btn-gold" disabled={pwSaving}>
+            {pwSaving ? "Updating..." : "Update Password"}
           </button>
         </div>
       </form>

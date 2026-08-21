@@ -36,3 +36,24 @@ exports.login = asyncHandler(async (req, res) => {
 exports.getMe = asyncHandler(async (req, res) => {
   res.json({ success: true, user: req.user });
 });
+
+// @PUT /api/auth/change-password
+exports.changePassword = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    res.status(400); throw new Error("Current and new password are required");
+  }
+  if (newPassword.length < 6) {
+    res.status(400); throw new Error("New password must be at least 6 characters");
+  }
+
+  const user = await User.findById(req.user._id);
+  if (!(await user.matchPassword(currentPassword))) {
+    res.status(401); throw new Error("Current password is incorrect");
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  res.json({ success: true, message: "Password updated successfully" });
+});
