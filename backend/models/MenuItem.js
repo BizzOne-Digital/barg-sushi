@@ -21,7 +21,6 @@ const menuItemSchema = new mongoose.Schema(
         "Specialties",
         "Poke Bowls",
         "Tataki & Tartar",
-        "Platters & Combos",
         "Grill",
         "Drinks",
       ],

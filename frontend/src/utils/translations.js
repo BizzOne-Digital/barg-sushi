@@ -147,7 +147,6 @@ const categoryNamesFr = {
   Specialties: "Spécialités",
   "Poke Bowls": "Poké Bols",
   "Tataki & Tartar": "Tataki et Tartare",
-  "Platters & Combos": "Plateaux et Combos",
   Grill: "Grill",
   Drinks: "Boissons",
 };

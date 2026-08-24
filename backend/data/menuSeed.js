@@ -166,12 +166,12 @@ const menuItems = [
   // ─────────────────────────────────────────
   // PLATTERS & COMBOS
   // ─────────────────────────────────────────
-  { name: "Vegetarian Platter", nameFr: "Plateau Végétarien", category: "Platters & Combos", price: 60, description: "50 pcs. Avocado, Kappa, The Batchy™, Atomic Veggie, Veggie Delight, Kinoko, Green Garden.", descriptionFr: "50 mcx. Avocado, Kappa, Le Batchy™, Légume Atomique, Délice Végé, Kinoko, Jardin Vert.", pieces: 50, image: null, available: true, featured: false },
-  { name: "Salmon Combo", nameFr: "Combo Saumon", category: "Platters & Combos", price: 52, description: "21 pcs. Kamikaze, Orange Alaska, Nagano.", descriptionFr: "21 mcx. Kamikaze, Orange Alaska, Nagano.", pieces: 21, image: null, available: true, featured: false },
-  { name: "Tuna Combo", nameFr: "Combo Thon", category: "Platters & Combos", price: 60, description: "21 pcs. Kamikaze, Dynamite, Amai.", descriptionFr: "21 mcx. Kamikaze, Dynamite, Amai.", pieces: 21, image: null, available: true, featured: false },
-  { name: "Fried Combo", nameFr: "Combo Frits", category: "Platters & Combos", price: 55, description: "21 pcs. Red Dragon, Crunch, Yokohama.", descriptionFr: "21 mcx. Red Dragon, Crunch, Yokohama.", pieces: 21, image: null, available: true, featured: false },
-  { name: "Veggie Combo", nameFr: "Combo Végétarien", category: "Platters & Combos", price: 40, description: "21 pcs. Avocado, The Batchy™, Sweetie.", descriptionFr: "21 mcx. Avocado, Le Batchy™, La Douceur.", pieces: 21, image: null, available: true, featured: false },
-  { name: "Le Pond", nameFr: "Le Pond", category: "Platters & Combos", price: 70, description: "Your choice of 3 rolls. Dine-in only. Also available as Regular (75 pcs), Deluxe (120 pcs), or Blend (100 pcs).", descriptionFr: "Votre choix de 3 rouleaux. En salle seulement. Disponible aussi en Régulier (75 mcx), Deluxe (120 mcx) ou Mélange (100 mcx).", pieces: null, image: null, available: true, featured: false },
+  { name: "Vegetarian Platter", nameFr: "Plateau Végétarien", category: "Veggie Rolls", price: 60, description: "50 pcs. Avocado, Kappa, The Batchy™, Atomic Veggie, Veggie Delight, Kinoko, Green Garden.", descriptionFr: "50 mcx. Avocado, Kappa, Le Batchy™, Légume Atomique, Délice Végé, Kinoko, Jardin Vert.", pieces: 50, image: null, available: true, featured: false },
+  { name: "Salmon Combo", nameFr: "Combo Saumon", category: "Rolls", price: 52, description: "21 pcs. Kamikaze, Orange Alaska, Nagano.", descriptionFr: "21 mcx. Kamikaze, Orange Alaska, Nagano.", pieces: 21, image: null, available: true, featured: false },
+  { name: "Tuna Combo", nameFr: "Combo Thon", category: "Rolls", price: 60, description: "21 pcs. Kamikaze, Dynamite, Amai.", descriptionFr: "21 mcx. Kamikaze, Dynamite, Amai.", pieces: 21, image: null, available: true, featured: false },
+  { name: "Fried Combo", nameFr: "Combo Frits", category: "Crispy Collection", price: 55, description: "21 pcs. Red Dragon, Crunch, Yokohama.", descriptionFr: "21 mcx. Red Dragon, Crunch, Yokohama.", pieces: 21, image: null, available: true, featured: false },
+  { name: "Veggie Combo", nameFr: "Combo Végétarien", category: "Veggie Rolls", price: 40, description: "21 pcs. Avocado, The Batchy™, Sweetie.", descriptionFr: "21 mcx. Avocado, Le Batchy™, La Douceur.", pieces: 21, image: null, available: true, featured: false },
+  { name: "Le Pond", nameFr: "Le Pond", category: "Specialties", price: 70, description: "Your choice of 3 rolls. Dine-in only. Also available as Regular (75 pcs), Deluxe (120 pcs), or Blend (100 pcs).", descriptionFr: "Votre choix de 3 rouleaux. En salle seulement. Disponible aussi en Régulier (75 mcx), Deluxe (120 mcx) ou Mélange (100 mcx).", pieces: null, image: null, available: true, featured: false },
 
   // ─────────────────────────────────────────
   // GRILL
@@ -196,7 +196,6 @@ const categories = [
   "Specialties",
   "Poke Bowls",
   "Tataki & Tartar",
-  "Platters & Combos",
   "Grill",
   "Drinks",
 ];
@@ -208,11 +207,12 @@ const categories = [
 // ============================================================
 const menuTypes = ["Standard", "Special", "Platter", "Combo"];
 
+const platterNames = ["Vegetarian Platter", "Le Pond"];
+const comboNames = ["Salmon Combo", "Tuna Combo", "Fried Combo", "Veggie Combo"];
+
 function classifyMenuType(item) {
-  const name = item.name.toLowerCase();
-  if (item.category === "Platters & Combos") {
-    return name.includes("platter") ? "Platter" : "Combo";
-  }
+  if (comboNames.includes(item.name)) return "Combo";
+  if (platterNames.includes(item.name)) return "Platter";
   if (item.category === "Grill") return "Platter";
   if (item.category === "Specialties" || item.featured) return "Special";
   return "Standard";
