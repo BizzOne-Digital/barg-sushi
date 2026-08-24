@@ -7,7 +7,7 @@ import "./AdminMenu.css";
 
 const CATEGORIES = [
   "Appetizers","Salads","Nigiri","Sashimi","Hand Rolls","Our Classics",
-  "Veggie Rolls","Rolls","Crispy Collection","Light & Fresh",
+  "Veggie Rolls","Crispy Collection","Light & Fresh",
   "Specialties","Poke Bowls","Tataki & Tartar","Grill","Drinks",
 ];
 

@@ -141,7 +141,6 @@ const categoryNamesFr = {
   "Hand Rolls": "Cornets",
   "Our Classics": "Incontournables",
   "Veggie Rolls": "Rouleaux Végé",
-  Rolls: "Rouleaux",
   "Crispy Collection": "Collection Croustillante",
   "Light & Fresh": "Léger et Frais",
   Specialties: "Spécialités",

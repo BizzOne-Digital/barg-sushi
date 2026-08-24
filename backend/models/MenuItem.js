@@ -15,7 +15,6 @@ const menuItemSchema = new mongoose.Schema(
         "Hand Rolls",
         "Our Classics",
         "Veggie Rolls",
-        "Rolls",
         "Crispy Collection",
         "Light & Fresh",
         "Specialties",
