@@ -22,7 +22,6 @@ const AdminMenu = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [activeType, setActiveType] = useState("All");
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -126,9 +125,8 @@ const AdminMenu = () => {
 
   const filtered = items.filter((i) => {
     const matchCat = activeCategory === "All" || i.category === activeCategory;
-    const matchType = activeType === "All" || i.menuType === activeType;
     const matchSearch = i.name.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchType && matchSearch;
+    return matchCat && matchSearch;
   });
 
   return (
@@ -159,17 +157,6 @@ const AdminMenu = () => {
                 onClick={() => setActiveCategory(cat)}
               >
                 {cat}
-              </button>
-            ))}
-          </div>
-          <div className="admin-cat-tabs admin-type-tabs">
-            {["All", ...MENU_TYPES].map((type) => (
-              <button
-                key={type}
-                className={`admin-cat-tab ${activeType === type ? "active" : ""}`}
-                onClick={() => setActiveType(type)}
-              >
-                {type}
               </button>
             ))}
           </div>

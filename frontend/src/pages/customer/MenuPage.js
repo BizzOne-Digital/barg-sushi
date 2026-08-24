@@ -7,13 +7,10 @@ import { useLanguage } from "../../context/LanguageContext";
 import { t, translateCategory } from "../../utils/translations";
 import "./MenuPage.css";
 
-const MENU_TYPES = ["All", "Standard", "Special", "Platter", "Combo"];
-
 const MenuPage = () => {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [activeType, setActiveType] = useState("All");
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const { language } = useLanguage();
@@ -30,12 +27,11 @@ const MenuPage = () => {
 
   const filtered = items.filter((item) => {
     const matchCat = activeCategory === "All" || item.category === activeCategory;
-    const matchType = activeType === "All" || item.menuType === activeType;
     const name = language === "fr" && item.nameFr ? item.nameFr : item.name;
     const description = language === "fr" && item.descriptionFr ? item.descriptionFr : item.description;
     const matchSearch = name.toLowerCase().includes(search.toLowerCase()) ||
       description.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchType && matchSearch;
+    return matchCat && matchSearch;
   });
 
   // Group by category for display
@@ -75,18 +71,6 @@ const MenuPage = () => {
             onClick={() => setActiveCategory(cat)}
           >
             {cat === "All" ? t(language, "menu_all") : translateCategory(language, cat)}
-          </button>
-        ))}
-      </div>
-
-      <div className="menu-categories menu-types container">
-        {MENU_TYPES.map((type) => (
-          <button
-            key={type}
-            className={`cat-btn ${activeType === type ? "active" : ""}`}
-            onClick={() => setActiveType(type)}
-          >
-            {type === "All" ? t(language, "menu_all") : type}
           </button>
         ))}
       </div>
