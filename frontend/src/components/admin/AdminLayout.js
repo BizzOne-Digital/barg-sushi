@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, UtensilsCrossed, ShoppingBag, CalendarDays,
-  Settings, LogOut, Menu, X, ChevronRight, Image, ImagePlus,
+  Settings, LogOut, Menu, X, ChevronRight, Image, ImagePlus, Tags,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import "./AdminLayout.css";
@@ -10,6 +10,7 @@ import "./AdminLayout.css";
 const navItems = [
   { path: "/admin", icon: <LayoutDashboard size={18} />, label: "Dashboard" },
   { path: "/admin/menu", icon: <UtensilsCrossed size={18} />, label: "Menu Items" },
+  { path: "/admin/categories", icon: <Tags size={18} />, label: "Categories" },
   { path: "/admin/product-images", icon: <ImagePlus size={18} />, label: "Product Images" },
   { path: "/admin/gallery", icon: <Image size={18} />, label: "Gallery" },
   { path: "/admin/orders", icon: <ShoppingBag size={18} />, label: "Orders" },

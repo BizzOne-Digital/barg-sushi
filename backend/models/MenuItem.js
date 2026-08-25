@@ -4,26 +4,10 @@ const menuItemSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
     nameFr: { type: String, trim: true },
-    category: {
-      type: String,
-      required: true,
-      enum: [
-        "Appetizers",
-        "Salads",
-        "Nigiri",
-        "Sashimi",
-        "Hand Rolls",
-        "Our Classics",
-        "Veggie Rolls",
-        "Crispy Collection",
-        "Light & Fresh",
-        "Specialties",
-        "Poke Bowls",
-        "Tataki & Tartar",
-        "Grill",
-        "Drinks",
-      ],
-    },
+    // Free-form string, validated against the Category collection at the
+    // controller layer — categories are managed dynamically via the admin
+    // panel rather than hardcoded here, so this list never needs a deploy.
+    category: { type: String, required: true, trim: true },
     menuType: {
       type: String,
       enum: ["Standard", "Special", "Platter", "Combo"],

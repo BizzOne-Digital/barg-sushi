@@ -5,21 +5,16 @@ import AdminLayout from "../../components/admin/AdminLayout";
 import api from "../../utils/api";
 import "./AdminMenu.css";
 
-const CATEGORIES = [
-  "Appetizers","Salads","Nigiri","Sashimi","Hand Rolls","Our Classics",
-  "Veggie Rolls","Crispy Collection","Light & Fresh",
-  "Specialties","Poke Bowls","Tataki & Tartar","Grill","Drinks",
-];
-
 const MENU_TYPES = ["Standard", "Special", "Platter", "Combo"];
 
 const EMPTY_FORM = {
-  name: "", nameFr: "", category: "Our Classics", menuType: "Standard", price: "", pieces: "",
+  name: "", nameFr: "", category: "", menuType: "Standard", price: "", pieces: "",
   description: "", descriptionFr: "", available: true, featured: false, tags: "",
 };
 
 const AdminMenu = () => {
   const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
   const [modalOpen, setModalOpen] = useState(false);
@@ -34,11 +29,15 @@ const AdminMenu = () => {
     api.get("/menu?available=all").then(({ data }) => setItems(data.data)).finally(() => setLoading(false));
   };
 
-  useEffect(() => { fetchItems(); }, []);
+  const fetchCategories = () => {
+    api.get("/categories").then(({ data }) => setCategories(data.data.map((c) => c.name)));
+  };
+
+  useEffect(() => { fetchItems(); fetchCategories(); }, []);
 
   const openAdd = () => {
     setEditItem(null);
-    setForm(EMPTY_FORM);
+    setForm({ ...EMPTY_FORM, category: categories[0] || "" });
     setImageFile(null);
     setImagePreview("");
     setModalOpen(true);
@@ -135,7 +134,7 @@ const AdminMenu = () => {
         <div className="admin-page-header">
           <div>
             <h1 className="admin-page-title">Menu Management</h1>
-            <p className="admin-page-sub">{items.length} items across {CATEGORIES.length} categories</p>
+            <p className="admin-page-sub">{items.length} items across {categories.length} categories</p>
           </div>
           <button className="btn btn-gold" onClick={openAdd}>
             <Plus size={16} /> Add Item
@@ -150,7 +149,7 @@ const AdminMenu = () => {
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="admin-cat-tabs">
-            {["All", ...CATEGORIES].map((cat) => (
+            {["All", ...categories].map((cat) => (
               <button
                 key={cat}
                 className={`admin-cat-tab ${activeCategory === cat ? "active" : ""}`}
@@ -260,7 +259,7 @@ const AdminMenu = () => {
                 <div className="form-group">
                   <label>Category *</label>
                   <select value={form.category} onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}>
-                    {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+                    {categories.map((c) => <option key={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="form-group">

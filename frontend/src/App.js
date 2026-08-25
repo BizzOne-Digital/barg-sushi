@@ -23,6 +23,7 @@ import LoginPage from "./pages/customer/LoginPage";
 // Admin pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminMenu from "./pages/admin/AdminMenu";
+import AdminCategories from "./pages/admin/AdminCategories";
 import AdminProductImages from "./pages/admin/AdminProductImages";
 import AdminGallery from "./pages/admin/AdminGallery";
 import AdminOrders from "./pages/admin/AdminOrders";
@@ -63,6 +64,7 @@ function App() {
               {/* Admin routes */}
               <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
               <Route path="/admin/menu" element={<AdminRoute><AdminMenu /></AdminRoute>} />
+              <Route path="/admin/categories" element={<AdminRoute><AdminCategories /></AdminRoute>} />
               <Route path="/admin/product-images" element={<AdminRoute><AdminProductImages /></AdminRoute>} />
               <Route path="/admin/gallery" element={<AdminRoute><AdminGallery /></AdminRoute>} />
               <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
