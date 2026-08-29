@@ -1,15 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Trash2, Plus, Minus, ShoppingBag, ChevronRight, ArrowLeft, UtensilsCrossed } from "lucide-react";
 import { useCart } from "../../context/CartContext";
+import api from "../../utils/api";
 import "./CartPage.css";
 
 const TAX_RATE = 0.15;
 const DELIVERY_FEE = 5;
 
+const ORDER_TYPES = [
+  { key: "takeout", settingKey: "takeoutEnabled" },
+  { key: "delivery", settingKey: "deliveryEnabled" },
+  { key: "dine-in", settingKey: "dineInEnabled" },
+];
+
 const CartPage = () => {
   const { items, removeItem, updateQty, clearCart, subtotal, itemCount, orderType, setOrderType } = useCart();
   const navigate = useNavigate();
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    api.get("/settings").then(({ data }) => setSettings(data.data)).catch(() => {});
+  }, []);
+
+  const availableTypes = ORDER_TYPES.filter((t) => !settings || settings[t.settingKey] !== false);
+
+  useEffect(() => {
+    if (!settings) return;
+    const stillAvailable = availableTypes.some((t) => t.key === orderType);
+    if (!stillAvailable && availableTypes.length > 0) setOrderType(availableTypes[0].key);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settings]);
 
   const deliveryFee = orderType === "delivery" ? DELIVERY_FEE : 0;
   const tax = parseFloat((subtotal * TAX_RATE).toFixed(2));
@@ -34,13 +55,13 @@ const CartPage = () => {
           <div className="cart-items">
             {/* Order type selector */}
             <div className="order-type-selector">
-              {["takeout", "delivery", "dine-in"].map((type) => (
+              {availableTypes.map(({ key }) => (
                 <button
-                  key={type}
-                  className={`type-btn ${orderType === type ? "active" : ""}`}
-                  onClick={() => setOrderType(type)}
+                  key={key}
+                  className={`type-btn ${orderType === key ? "active" : ""}`}
+                  onClick={() => setOrderType(key)}
                 >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
+                  {key.charAt(0).toUpperCase() + key.slice(1)}
                 </button>
               ))}
             </div>

@@ -11,6 +11,16 @@ exports.createOrder = asyncHandler(async (req, res) => {
     throw new Error(settings.orderingClosedMessage || "We're currently not accepting online orders.");
   }
 
+  const orderTypeSettingKey = {
+    delivery: "deliveryEnabled",
+    takeout: "takeoutEnabled",
+    "dine-in": "dineInEnabled",
+  }[req.body.orderType];
+  if (settings && orderTypeSettingKey && settings[orderTypeSettingKey] === false) {
+    res.status(403);
+    throw new Error(`${req.body.orderType} orders are currently unavailable.`);
+  }
+
   if (req.body.scheduledFor) {
     const scheduled = new Date(req.body.scheduledFor);
     const maxDate = new Date();
