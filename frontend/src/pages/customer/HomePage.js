@@ -80,7 +80,7 @@ const HomePage = () => {
           <Reveal
             variant="left"
             className="about-teaser-visual"
-            style={{ "--about-bg-image": `url(${process.env.PUBLIC_URL}/home.png)` }}
+            style={{ "--about-bg-image": `url(${process.env.PUBLIC_URL}/new8.jpg)` }}
           >
             <div className="about-accent-box">
               <div className="accent-line" />

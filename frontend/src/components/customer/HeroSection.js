@@ -11,8 +11,8 @@ const HeroSection = () => {
     <section
       className="hero"
       style={{
-        "--hero-bg-image": `url(${process.env.PUBLIC_URL}/hero.png)`,
-        "--hero-bg-image-mobile": `url(${process.env.PUBLIC_URL}/mobile-hero.png)`,
+        "--hero-bg-image": `url(${process.env.PUBLIC_URL}/new1.jpg)`,
+        "--hero-bg-image-mobile": `url(${process.env.PUBLIC_URL}/new1.jpg)`,
       }}
     >
       {/* Particle overlay */}
