@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Banknote, CreditCard } from "lucide-react";
+import { Banknote, CreditCard, AlertCircle } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../utils/api";
@@ -31,6 +31,17 @@ const CheckoutPage = () => {
     scheduledFor: "",
   });
   const [submitting, setSubmitting] = useState(false);
+  const [orderingClosed, setOrderingClosed] = useState(false);
+  const [closedMessage, setClosedMessage] = useState("");
+
+  useEffect(() => {
+    api.get("/settings").then(({ data }) => {
+      if (data.data?.orderingEnabled === false) {
+        setOrderingClosed(true);
+        setClosedMessage(data.data.orderingClosedMessage || "We're currently not accepting online orders.");
+      }
+    }).catch(() => {});
+  }, []);
 
   const now = new Date();
   const minSchedule = toLocalDatetimeInput(now);
@@ -46,6 +57,7 @@ const CheckoutPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (orderingClosed) return toast.error(closedMessage);
     if (items.length === 0) return toast.error("Cart is empty");
     if (form.orderTiming === "scheduled" && !form.scheduledFor) {
       return toast.error("Please pick a date and time for your order");
@@ -85,6 +97,12 @@ const CheckoutPage = () => {
     <div className="checkout-page">
       <div className="container">
         <h1 className="checkout-title">Checkout</h1>
+        {orderingClosed && (
+          <div className="checkout-closed-banner">
+            <AlertCircle size={20} />
+            <span>{closedMessage}</span>
+          </div>
+        )}
         <div className="checkout-layout">
           <form className="checkout-form" onSubmit={handleSubmit}>
             <div className="form-section">
@@ -184,8 +202,8 @@ const CheckoutPage = () => {
                 value={form.notes} onChange={handleChange} />
             </div>
 
-            <button type="submit" className="btn btn-gold submit-order" disabled={submitting}>
-              {submitting ? "Placing Order..." : `Place Order — $${total.toFixed(2)}`}
+            <button type="submit" className="btn btn-gold submit-order" disabled={submitting || orderingClosed}>
+              {orderingClosed ? "Ordering Currently Closed" : submitting ? "Placing Order..." : `Place Order — $${total.toFixed(2)}`}
             </button>
           </form>
 

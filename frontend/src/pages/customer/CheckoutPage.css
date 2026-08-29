@@ -1,5 +1,15 @@
 .checkout-page { padding: 40px 0 80px; }
 .checkout-title { font-size: 2rem; color: var(--gold); margin-bottom: 32px; }
+.checkout-closed-banner {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(192,57,43,0.1);
+  border: 1px solid rgba(192,57,43,0.35);
+  color: #e07a5f;
+  padding: 14px 18px;
+  border-radius: var(--radius-sm, 8px);
+  margin-bottom: 24px;
+  font-size: 0.92rem;
+}
 .checkout-layout { display: grid; grid-template-columns: 1fr 360px; gap: 40px; align-items: start; }
 
 .form-section {

@@ -77,6 +77,37 @@ const AdminSettings = () => {
       <p className="admin-page-sub">Control all content and configuration from here</p>
 
       <form onSubmit={handleSave}>
+        {/* Store status — master ordering switch */}
+        <div className="settings-section" style={{
+          border: settings.orderingEnabled === false ? "1px solid var(--red, #c0392b)" : undefined,
+        }}>
+          <h2>Store Status</h2>
+          <div className="form-group">
+            <label className="toggle-label" style={{ marginBottom: 12 }}>
+              <input
+                type="checkbox"
+                name="orderingEnabled"
+                checked={settings.orderingEnabled !== false}
+                onChange={handleChange}
+              />
+              <span>Accepting Online Orders</span>
+            </label>
+            <p style={{ fontSize: "0.82rem", color: "var(--white-dim)", margin: "0 0 12px" }}>
+              Turn this off to immediately stop customers from placing any new order (delivery, takeout, or dine-in) —
+              they'll see the message below instead of the checkout form.
+            </p>
+          </div>
+          <div className="form-group">
+            <label>Message shown when orders are closed</label>
+            <input
+              name="orderingClosedMessage"
+              value={settings.orderingClosedMessage || ""}
+              onChange={handleChange}
+              placeholder="We're currently not accepting online orders."
+            />
+          </div>
+        </div>
+
         {/* General */}
         <div className="settings-section">
           <h2>General Information</h2>

@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 
 const settingsSchema = new mongoose.Schema(
   {
+    orderingEnabled: { type: Boolean, default: true },
+    orderingClosedMessage: { type: String, default: "We're currently not accepting online orders. Please check back soon or call us directly." },
     restaurantName: { type: String, default: "Barg Sushi Bar & Grill" },
     tagline: { type: String, default: "Serving High Quality Sushi, Grill & Bar" },
     phone: { type: String, default: "" },

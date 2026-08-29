@@ -5,6 +5,12 @@ const { sendOrderConfirmation } = require("../utils/emailService");
 
 // @POST /api/orders — Public (guest or logged in)
 exports.createOrder = asyncHandler(async (req, res) => {
+  const settings = await Settings.findOne();
+  if (settings && settings.orderingEnabled === false) {
+    res.status(403);
+    throw new Error(settings.orderingClosedMessage || "We're currently not accepting online orders.");
+  }
+
   if (req.body.scheduledFor) {
     const scheduled = new Date(req.body.scheduledFor);
     const maxDate = new Date();
@@ -15,7 +21,6 @@ exports.createOrder = asyncHandler(async (req, res) => {
     }
   }
 
-  const settings = await Settings.findOne();
   const taxRate = settings?.taxRate || 0.15;
   const deliveryFee = req.body.orderType === "delivery" ? (settings?.deliveryFee || 5) : 0;
 
