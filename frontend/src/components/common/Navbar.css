@@ -2,9 +2,9 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(38,36,32,0.96);
+  background: rgba(250,248,244,0.97);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--black-border);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 .navbar-inner {
@@ -43,7 +43,7 @@
   position: relative;
   font-size: 0.9rem;
   font-weight: 500;
-  color: var(--white-dim);
+  color: #2a2620;
   transition: color var(--transition);
   letter-spacing: 0.5px;
 }
@@ -66,8 +66,8 @@
 
 .lang-toggle {
   background: none;
-  border: 1px solid var(--black-border);
-  color: var(--white-dim);
+  border: 1px solid rgba(0,0,0,0.15);
+  color: #2a2620;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -76,11 +76,11 @@
   cursor: pointer;
   transition: all var(--transition);
 }
-.lang-toggle:hover { border-color: var(--gold-dark); color: var(--gold); }
+.lang-toggle:hover { border-color: var(--gold-dark); color: var(--gold-dark); }
 
 .cart-btn {
   position: relative;
-  color: var(--white);
+  color: #2a2620;
   background: none;
   border: none;
   cursor: pointer;
@@ -104,11 +104,11 @@
 .user-menu { position: relative; }
 .user-icon {
   display: flex; align-items: center; gap: 6px;
-  background: none; color: var(--white-dim);
+  background: none; color: #2a2620;
   font-size: 0.85rem; padding: 6px;
   transition: color var(--transition);
 }
-.user-icon:hover { color: var(--gold); }
+.user-icon:hover { color: var(--gold-dark); }
 .user-dropdown {
   display: none;
   position: absolute; right: 0; top: calc(100% + 8px);
@@ -134,7 +134,7 @@
 .hamburger {
   display: none;
   background: none;
-  color: var(--white);
+  color: #2a2620;
   padding: 4px;
 }
 
@@ -143,11 +143,11 @@
   .navbar-links {
     position: fixed;
     top: 88px; left: 0; right: 0;
-    background: var(--black-soft);
+    background: rgba(250,248,244,0.98);
     flex-direction: column;
     padding: 20px;
     gap: 16px;
-    border-bottom: 1px solid var(--black-border);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
     transform: translateY(-120%);
     transition: transform 0.3s ease, visibility 0.3s ease;
     visibility: hidden;
