@@ -29,7 +29,6 @@ const CartPage = () => {
     if (!settings) return;
     const stillAvailable = availableTypes.some((t) => t.key === orderType);
     if (!stillAvailable && availableTypes.length > 0) setOrderType(availableTypes[0].key);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings]);
 
   const deliveryFee = orderType === "delivery" ? DELIVERY_FEE : 0;
