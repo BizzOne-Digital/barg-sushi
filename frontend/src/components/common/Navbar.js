@@ -24,7 +24,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-inner container">
         <Link to="/" className="navbar-logo">
-          <img src={`${process.env.PUBLIC_URL}/logonew.jpg`} alt="Barg Sushi Bar & Grill" className="logo-img" />
+          <img src={`${process.env.PUBLIC_URL}/logonew.png`} alt="Barg Sushi Bar & Grill" className="logo-img" />
         </Link>
 
         <ul className={`navbar-links ${open ? "open" : ""}`}>

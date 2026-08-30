@@ -24,7 +24,7 @@ const AboutPage = () => (
         </Reveal>
         <Reveal as="div" variant="right" delay={120} className="about-logo-visual">
           <div className="logo-display">
-            <img src={`${process.env.PUBLIC_URL}/logonew.jpg`} alt="Barg Sushi Bar & Grill" className="logo-display-img" />
+            <img src={`${process.env.PUBLIC_URL}/logonew.png`} alt="Barg Sushi Bar & Grill" className="logo-display-img" />
             <div className="logo-accent" />
           </div>
         </Reveal>
