@@ -9,12 +9,19 @@
   gap: 40px;
   padding-bottom: 40px;
 }
-.footer-logo-img {
+.footer-logo-crop {
   height: 90px;
-  width: auto;
-  object-fit: contain;
-  display: block;
+  overflow: hidden;
   margin-bottom: 10px;
+}
+.footer-logo-img {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  display: block;
+  /* Source file has a thin border baked in near its edges — scale up
+     so the crop falls outside the visible box. */
+  transform: scale(1.18);
 }
 .footer-tagline {
   color: var(--white-dim);

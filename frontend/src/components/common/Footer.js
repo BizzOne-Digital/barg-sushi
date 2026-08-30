@@ -12,7 +12,9 @@ const Footer = () => {
     <footer className="footer">
       <Reveal as="div" className="footer-inner container">
         <div className="footer-brand">
-          <img src={`${process.env.PUBLIC_URL}/logonew.jpg`} alt="Barg Sushi Bar & Grill" className="footer-logo-img" />
+          <div className="footer-logo-crop">
+            <img src={`${process.env.PUBLIC_URL}/logonew.jpg`} alt="Barg Sushi Bar & Grill" className="footer-logo-img" />
+          </div>
           <p className="footer-tagline">{t(language, "footer_tagline")}</p>
           <p className="footer-desc">{t(language, "footer_desc")}<br />{t(language, "footer_desc2")}</p>
           <div className="footer-socials">
