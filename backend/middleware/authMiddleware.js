@@ -11,7 +11,13 @@ exports.protect = asyncHandler(async (req, res, next) => {
     res.status(401);
     throw new Error("Not authorized, no token");
   }
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    res.status(401);
+    throw new Error("Session expired or invalid — please log in again");
+  }
   req.user = await User.findById(decoded.id).select("-password");
   if (!req.user) {
     res.status(401);

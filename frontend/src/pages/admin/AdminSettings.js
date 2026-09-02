@@ -30,8 +30,8 @@ const AdminSettings = () => {
     try {
       await api.put("/settings", settings);
       toast.success("Settings saved");
-    } catch {
-      toast.error("Failed to save");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to save");
     } finally {
       setSaving(false);
     }
