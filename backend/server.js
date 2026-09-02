@@ -27,7 +27,10 @@ app.get("/", (req, res) => res.json({ message: "Barg Sushi API running" }));
 
 // Error handler
 app.use((err, req, res, next) => {
-  const status = err.statusCode || 500;
+  // Controllers set the intended status via res.status(xxx) before throwing —
+  // that survives on res.statusCode even though express resets `err` to plain.
+  // Fall back to 500 only when nothing more specific was set.
+  const status = res.statusCode && res.statusCode !== 200 ? res.statusCode : (err.statusCode || 500);
   res.status(status).json({ success: false, message: err.message || "Server Error" });
 });
 

@@ -90,7 +90,29 @@
 .admin-content { padding: 28px; flex: 1; }
 
 @media (max-width: 768px) {
-  .admin-sidebar { transform: translateX(-100%); }
+  .admin-sidebar { transform: translateX(-100%); width: 220px; }
   .admin-layout.sidebar-open .admin-sidebar { transform: translateX(0); }
   .admin-main { margin-left: 0 !important; }
+  .admin-content { padding: 16px; }
+  .admin-topbar { padding: 0 16px; }
+  .topbar-user { font-size: 0.75rem; }
+}
+
+/* Shared responsive fixes for admin pages (headers, search boxes, forms) —
+   kept here since AdminLayout wraps every admin screen. */
+@media (max-width: 600px) {
+  .admin-page-header {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .admin-page-header > button { width: 100%; justify-content: center; }
+  .admin-search { width: 100% !important; box-sizing: border-box; }
+  .menu-controls-admin,
+  .cat-add-form {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .admin-cat-tabs { gap: 6px; }
+  .admin-cat-tab { padding: 5px 10px; font-size: 0.72rem; }
+  .modal-box { max-width: 100%; margin: 0 12px; }
 }
