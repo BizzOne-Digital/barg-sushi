@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import Reveal from "../../components/common/Reveal";
 import api from "../../utils/api";
+import { groupHours } from "../../utils/hours";
 import "./ContactPage.css";
 
 const ContactPage = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [loading, setLoading] = useState(false);
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    api.get("/settings").then(({ data }) => setSettings(data.data)).catch(() => {});
+  }, []);
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -42,13 +48,11 @@ const ContactPage = () => {
             <h2>Visit Us</h2>
             <div className="contact-cards">
               {[
-                { icon: MapPin, title: "Address", body: <p>To be updated by client</p> },
-                { icon: Phone, title: "Phone", body: <p>To be updated by client</p> },
-                { icon: Mail, title: "Email", body: <p>To be updated by client</p> },
+                { icon: MapPin, title: "Address", body: <p>{settings?.address || "To be updated by client"}</p> },
+                { icon: Phone, title: "Phone", body: <p>{settings?.phone || "To be updated by client"}</p> },
+                { icon: Mail, title: "Email", body: <p>{settings?.email || "To be updated by client"}</p> },
                 { icon: Clock, title: "Hours", body: <>
-                    <p>Mon–Thu: 11am – 10pm</p>
-                    <p>Fri–Sat: 11am – 11pm</p>
-                    <p>Sun: 12pm – 9pm</p>
+                    {groupHours(settings?.hours).map((g) => <p key={g.label}>{g.label}: {g.range}</p>)}
                   </> },
               ].map((c, i) => (
                 <Reveal as="div" className="contact-info-item" key={c.title} delay={i * 80}>

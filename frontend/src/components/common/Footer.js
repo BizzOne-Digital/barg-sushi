@@ -1,12 +1,20 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Instagram, Facebook } from "lucide-react";
 import Reveal from "./Reveal";
 import { useLanguage } from "../../context/LanguageContext";
 import { t } from "../../utils/translations";
+import { groupHours } from "../../utils/hours";
+import api from "../../utils/api";
 import "./Footer.css";
 
 const Footer = () => {
   const { language } = useLanguage();
+  const [hours, setHours] = useState(null);
+
+  useEffect(() => {
+    api.get("/settings").then(({ data }) => setHours(data.data?.hours)).catch(() => {});
+  }, []);
 
   return (
     <footer className="footer">
@@ -46,9 +54,9 @@ const Footer = () => {
         <div className="footer-col">
           <h4>{t(language, "footer_hours")}</h4>
           <ul className="footer-hours">
-            <li><span>{language === "fr" ? "Lun – Jeu" : "Mon – Thu"}</span><span>11h – 22h</span></li>
-            <li><span>{language === "fr" ? "Ven – Sam" : "Fri – Sat"}</span><span>11h – 23h</span></li>
-            <li><span>{language === "fr" ? "Dimanche" : "Sunday"}</span><span>12h – 21h</span></li>
+            {groupHours(hours).map((g) => (
+              <li key={g.label}><span>{g.label}</span><span>{g.range}</span></li>
+            ))}
           </ul>
         </div>
       </Reveal>

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Reveal from "../../components/common/Reveal";
 import api from "../../utils/api";
+import { groupHours } from "../../utils/hours";
 import "./ReservationPage.css";
 
 const ReservationPage = () => {
@@ -13,6 +14,11 @@ const ReservationPage = () => {
     occasion: "", specialRequests: "",
   });
   const [loading, setLoading] = useState(false);
+  const [hours, setHours] = useState(null);
+
+  useEffect(() => {
+    api.get("/settings").then(({ data }) => setHours(data.data?.hours)).catch(() => {});
+  }, []);
 
   const times = ["12:00 PM","12:30 PM","1:00 PM","1:30 PM","2:00 PM","5:00 PM","5:30 PM","6:00 PM","6:30 PM","7:00 PM","7:30 PM","8:00 PM","8:30 PM","9:00 PM"];
 
@@ -113,9 +119,9 @@ const ReservationPage = () => {
             <div className="res-info-card">
               <h3>Opening Hours</h3>
               <ul>
-                <li><span>Mon – Thu</span><span>11:00 AM – 10:00 PM</span></li>
-                <li><span>Fri – Sat</span><span>11:00 AM – 11:00 PM</span></li>
-                <li><span>Sunday</span><span>12:00 PM – 9:00 PM</span></li>
+                {groupHours(hours).map((g) => (
+                  <li key={g.label}><span>{g.label}</span><span>{g.range}</span></li>
+                ))}
               </ul>
             </div>
             <div className="res-info-card">
