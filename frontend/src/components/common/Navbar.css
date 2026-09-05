@@ -27,12 +27,12 @@
   height: 100%;
   width: auto;
   object-fit: cover;
-  /* Source file has a thin border baked in near its edges — scale up
-     and shift so the crop falls outside the visible box. */
-  transform: scale(1.18);
+  /* Source file has black letterbox bars baked in top/bottom — scale up
+     so the fixed-height clipping container crops them out. */
+  transform: scale(1.4);
   transition: transform 0.3s ease;
 }
-.navbar-logo:hover .logo-img { transform: scale(1.24); }
+.navbar-logo:hover .logo-img { transform: scale(1.46); }
 
 .navbar-links {
   display: flex;

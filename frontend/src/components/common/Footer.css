@@ -19,9 +19,9 @@
   width: auto;
   object-fit: cover;
   display: block;
-  /* Source file has a thin border baked in near its edges — scale up
+  /* Source file has black letterbox bars baked in top/bottom — scale up
      so the crop falls outside the visible box. */
-  transform: scale(1.18);
+  transform: scale(1.4);
 }
 .footer-tagline {
   color: var(--white-dim);

@@ -7,6 +7,7 @@ import { ProtectedRoute, AdminRoute } from "./components/common/ProtectedRoute";
 import Navbar from "./components/common/Navbar";
 import Footer from "./components/common/Footer";
 import ScrollToTop from "./components/common/ScrollToTop";
+import SpecialOfferBanner from "./components/common/SpecialOfferBanner";
 
 // Customer pages
 import HomePage from "./pages/customer/HomePage";
@@ -34,6 +35,7 @@ import "./index.css";
 
 const CustomerLayout = ({ children }) => (
   <>
+    <SpecialOfferBanner />
     <Navbar />
     <main className="page-enter">{children}</main>
     <Footer />
