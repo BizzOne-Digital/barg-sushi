@@ -112,7 +112,7 @@ exports.sendAdminNewReservationNotification = async (reservation) => {
 exports.sendReservationConfirmation = async (reservation) => {
   await send({
     to: reservation.email,
-    subject: `Reservation Received — ${reservation.confirmationCode} | Barg Sushi`,
+    subject: `Reservation Request Received — ${reservation.confirmationCode} | Barg Sushi`,
     html: `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
         <div style="background:#1a1a1a;padding:30px;text-align:center;">
@@ -122,8 +122,8 @@ exports.sendReservationConfirmation = async (reservation) => {
         <div style="padding:30px;">
           <h2>Reservation Request Received</h2>
           <p>Hello <strong>${reservation.name}</strong>,</p>
-          <p>Your reservation request has been received. We will confirm shortly.</p>
-          <p><strong>Confirmation Code:</strong> ${reservation.confirmationCode}</p>
+          <p>This is <strong>not yet a confirmation</strong> — your request has been received and is pending approval from our team. We'll email you separately as soon as it's confirmed.</p>
+          <p><strong>Reference Code:</strong> ${reservation.confirmationCode}</p>
           <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString("en-CA")}</p>
           <p><strong>Time:</strong> ${reservation.time}</p>
           <p><strong>Party Size:</strong> ${reservation.partySize}</p>
