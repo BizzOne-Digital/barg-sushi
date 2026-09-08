@@ -1,11 +1,12 @@
 const asyncHandler = require("express-async-handler");
 const Reservation = require("../models/Reservation");
-const { sendReservationConfirmation, sendReservationStatusUpdate } = require("../utils/emailService");
+const { sendReservationConfirmation, sendReservationStatusUpdate, sendAdminNewReservationNotification } = require("../utils/emailService");
 
 // @POST /api/reservations — Public
 exports.createReservation = asyncHandler(async (req, res) => {
   const reservation = await Reservation.create(req.body);
   await sendReservationConfirmation(reservation);
+  await sendAdminNewReservationNotification(reservation);
   res.status(201).json({ success: true, data: reservation });
 });
 

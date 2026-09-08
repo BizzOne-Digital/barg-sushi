@@ -65,6 +65,50 @@ exports.sendOrderConfirmation = async ({ email, name, order }) => {
   });
 };
 
+exports.sendAdminNewOrderNotification = async ({ email, name, order }) => {
+  const itemsHtml = order.items
+    .map((i) => `<tr><td>${i.name}</td><td>x${i.quantity}</td><td>$${(i.price * i.quantity).toFixed(2)}</td></tr>`)
+    .join("");
+
+  await send({
+    to: process.env.EMAIL_USER,
+    subject: `New Order — ${order.orderNumber} (${order.orderType}) | Barg Sushi`,
+    html: `
+      <h2>New Order Received</h2>
+      <p><strong>Order #:</strong> ${order.orderNumber}</p>
+      <p><strong>Customer:</strong> ${name} ${email ? `(${email})` : ""}</p>
+      <p><strong>Phone:</strong> ${order.guestPhone || "N/A"}</p>
+      <p><strong>Type:</strong> ${order.orderType}</p>
+      ${order.scheduledFor ? `<p><strong>Scheduled For:</strong> ${new Date(order.scheduledFor).toLocaleString("en-CA")}</p>` : ""}
+      <table style="width:100%;border-collapse:collapse;margin:16px 0;">
+        <thead><tr><th style="text-align:left;">Item</th><th>Qty</th><th>Price</th></tr></thead>
+        <tbody>${itemsHtml}</tbody>
+      </table>
+      <p style="font-size:1.1em;"><strong>Total: $${order.total.toFixed(2)}</strong></p>
+      ${order.notes ? `<p><strong>Notes:</strong> ${order.notes}</p>` : ""}
+    `,
+  });
+};
+
+exports.sendAdminNewReservationNotification = async (reservation) => {
+  await send({
+    to: process.env.EMAIL_USER,
+    subject: `New Reservation Request — ${reservation.confirmationCode} | Barg Sushi`,
+    html: `
+      <h2>New Reservation Request</h2>
+      <p><strong>Name:</strong> ${reservation.name}</p>
+      <p><strong>Email:</strong> ${reservation.email}</p>
+      <p><strong>Phone:</strong> ${reservation.phone}</p>
+      <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString("en-CA")}</p>
+      <p><strong>Time:</strong> ${reservation.time}</p>
+      <p><strong>Party Size:</strong> ${reservation.partySize}</p>
+      ${reservation.occasion ? `<p><strong>Occasion:</strong> ${reservation.occasion}</p>` : ""}
+      ${reservation.specialRequests ? `<p><strong>Special Requests:</strong> ${reservation.specialRequests}</p>` : ""}
+      <p style="color:#888;">Please confirm or cancel this from the admin panel — the customer will be emailed automatically.</p>
+    `,
+  });
+};
+
 exports.sendReservationConfirmation = async (reservation) => {
   await send({
     to: reservation.email,
