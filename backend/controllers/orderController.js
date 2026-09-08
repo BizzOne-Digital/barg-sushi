@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Order = require("../models/Order");
 const Settings = require("../models/Settings");
-const { sendOrderConfirmation } = require("../utils/emailService");
+const { sendOrderConfirmation, sendOrderStatusUpdate } = require("../utils/emailService");
 
 // @POST /api/orders — Public (guest or logged in)
 exports.createOrder = asyncHandler(async (req, res) => {
@@ -85,8 +85,14 @@ exports.getAllOrders = asyncHandler(async (req, res) => {
 // @PUT /api/orders/:id/status — Admin
 exports.updateOrderStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
-  const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
+  const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true })
+    .populate("customer", "name email");
   if (!order) { res.status(404); throw new Error("Order not found"); }
+
+  const email = order.customer?.email || order.guestEmail;
+  const name = order.customer?.name || order.guestName;
+  if (email) await sendOrderStatusUpdate({ email, name, order });
+
   res.json({ success: true, data: order });
 });
 

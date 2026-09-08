@@ -1,6 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Reservation = require("../models/Reservation");
-const { sendReservationConfirmation } = require("../utils/emailService");
+const { sendReservationConfirmation, sendReservationStatusUpdate } = require("../utils/emailService");
 
 // @POST /api/reservations — Public
 exports.createReservation = asyncHandler(async (req, res) => {
@@ -33,5 +33,8 @@ exports.updateReservationStatus = asyncHandler(async (req, res) => {
     { new: true }
   );
   if (!reservation) { res.status(404); throw new Error("Reservation not found"); }
+
+  await sendReservationStatusUpdate(reservation);
+
   res.json({ success: true, data: reservation });
 });
