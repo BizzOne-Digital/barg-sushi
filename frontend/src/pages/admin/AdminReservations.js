@@ -61,7 +61,7 @@ const AdminReservations = () => {
                       </div>
                     </td>
                     <td>
-                      <div>{new Date(r.date).toLocaleDateString("en-CA")}</div>
+                      <div>{new Date(r.date).toLocaleDateString("en-CA", { timeZone: "UTC" })}</div>
                       <div style={{ color: "var(--gold)", fontSize: "0.82rem" }}>{r.time}</div>
                     </td>
                     <td style={{ textAlign: "center" }}>{r.partySize}</td>

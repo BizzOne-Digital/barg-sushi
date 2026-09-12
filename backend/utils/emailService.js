@@ -99,7 +99,7 @@ exports.sendAdminNewReservationNotification = async (reservation) => {
       <p><strong>Name:</strong> ${reservation.name}</p>
       <p><strong>Email:</strong> ${reservation.email}</p>
       <p><strong>Phone:</strong> ${reservation.phone}</p>
-      <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString("en-CA")}</p>
+      <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString("en-CA", { timeZone: "UTC" })}</p>
       <p><strong>Time:</strong> ${reservation.time}</p>
       <p><strong>Party Size:</strong> ${reservation.partySize}</p>
       ${reservation.occasion ? `<p><strong>Occasion:</strong> ${reservation.occasion}</p>` : ""}
@@ -124,7 +124,7 @@ exports.sendReservationConfirmation = async (reservation) => {
           <p>Hello <strong>${reservation.name}</strong>,</p>
           <p>This is <strong>not yet a confirmation</strong> — your request has been received and is pending approval from our team. We'll email you separately as soon as it's confirmed.</p>
           <p><strong>Reference Code:</strong> ${reservation.confirmationCode}</p>
-          <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString("en-CA")}</p>
+          <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString("en-CA", { timeZone: "UTC" })}</p>
           <p><strong>Time:</strong> ${reservation.time}</p>
           <p><strong>Party Size:</strong> ${reservation.partySize}</p>
           ${reservation.occasion ? `<p><strong>Occasion:</strong> ${reservation.occasion}</p>` : ""}
@@ -195,7 +195,7 @@ exports.sendReservationStatusUpdate = async (reservation) => {
           <h2>${message}</h2>
           <p>Hello <strong>${reservation.name}</strong>,</p>
           <p><strong>Confirmation Code:</strong> ${reservation.confirmationCode}</p>
-          <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString("en-CA")}</p>
+          <p><strong>Date:</strong> ${new Date(reservation.date).toLocaleDateString("en-CA", { timeZone: "UTC" })}</p>
           <p><strong>Time:</strong> ${reservation.time}</p>
           <p><strong>Party Size:</strong> ${reservation.partySize}</p>
           <hr/>

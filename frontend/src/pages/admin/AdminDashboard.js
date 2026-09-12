@@ -121,7 +121,7 @@ const AdminDashboard = () => {
                 <div className="res-item" key={r._id}>
                   <div className="res-item-info">
                     <strong>{r.name}</strong>
-                    <span>{new Date(r.date).toLocaleDateString("en-CA")} at {r.time}</span>
+                    <span>{new Date(r.date).toLocaleDateString("en-CA", { timeZone: "UTC" })} at {r.time}</span>
                     <span>{r.partySize} people</span>
                     {r.occasion && <span className="badge badge-gold">{r.occasion}</span>}
                   </div>
